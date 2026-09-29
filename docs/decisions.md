@@ -38,3 +38,12 @@ Assumption if unanswered: `lang = en` is the default snapshot filter; other lang
 Decision:
 Status: open
 Applied:
+
+## D5 — Ledger spool: carry `JudgeScore` events too, so RL on the GPU box fills the judge-score cache?
+Scope: repo
+Raised by: /dev-team:plan-package store (interview)
+Recommendation: yes. The repo contract's spool shape lists Run / Metric / Cost / ModelVersion events only, but RL rollouts are scored on the GPU box, where Postgres is unreachable; without a `judge_score` event every score the box produces is lost to the cache and would be paid for again at evaluation time. On the box `get_judge_score` returns a miss and `put_judge_score` spools; `store-import-spool` upserts them on key. Adds one line to the repo contract's Ledger spool row at the next `/dev-team:plan-repo` edit.
+Assumption if unanswered: yes — the spool carries `judge_score` events and the importer applies them insert-or-ignore on `key`.
+Decision:
+Status: open
+Applied:
