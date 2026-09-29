@@ -20,3 +20,21 @@ Assumption if unanswered: own Postgres tables; no MLflow.
 Decision:
 Status: open
 Applied:
+
+## D3 — Ledger transport from the GPU box: spool files imported later, or a tunnel to the Mac's Postgres?
+Scope: store, training
+Raised by: /dev-team:plan-repo (interview)
+Recommendation: a file spool. Training on the rented box writes `Run` / `Metric` / `Cost` / `ModelVersion` events to `var/spool/<run_id>.jsonl` through `store`'s API, and `store-import-spool` loads them into Postgres after the `rsync` back. No network path from a rented box to a Mac behind NAT, the run survives the Mac being asleep, and the spool doubles as an offline log. A reverse SSH tunnel can be added later without changing the API: the same `store` calls would simply write directly.
+Assumption if unanswered: spool files; `store` writes directly when Postgres is reachable and spools otherwise; the import command is idempotent.
+Decision:
+Status: open
+Applied:
+
+## D4 — v1 language scope: English only, or keep other languages in snapshots?
+Scope: corpus
+Raised by: /dev-team:plan-repo (interview)
+Recommendation: English only in v1 snapshots. A 0.5B model has no capacity to spare, the summary-pair datasets are English, and the judges score English most reliably. Other languages are still stored with their detected `lang` so the filter can be widened later without re-ingesting.
+Assumption if unanswered: `lang = en` is the default snapshot filter; other languages are kept in the database and excluded from snapshots.
+Decision:
+Status: open
+Applied:
