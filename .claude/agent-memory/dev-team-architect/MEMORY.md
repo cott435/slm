@@ -1,0 +1,3 @@
+- [External facts: ML stack](external-facts-ml-stack.md) — trl PPOTrainer gone (GRPO), vLLM py3.13 ok, venv 3.13; checked 2026-09-28
+- [User profile](user-profile.md) — solo learner, owns mechanisms over services, Mac dev + rented GPU, budget-conscious
+- [Plugin run-gate quirk](plugin-run-gate-quirk.md) — --run-gate <pkg> "missing contract" line is circular on plan-package; only branch/baseline lines block
